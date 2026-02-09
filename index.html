@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Be My Valentine 💘</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      overflow: hidden;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 30px 20px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 380px;
+      position: relative;
+    }
+
+    h1 {
+      color: #ff4b5c;
+      font-size: 1.8rem;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #444;
+    }
+
+    .buttons {
+      margin-top: 25px;
+      position: relative;
+      height: 90px;
+    }
+
+    button {
+      padding: 12px 22px;
+      font-size: 16px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      position: absolute;
+      min-width: 90px;
+    }
+
+    #yesBtn {
+      background: #ff4b5c;
+      color: white;
+      left: 20%;
+    }
+
+    #noBtn {
+      background: #ddd;
+      color: #333;
+      right: 20%;
+    }
+
+    #yesBtn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px #ff4b5c;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .hearts {
+      position: absolute;
+      font-size: 22px;
+      animation: float 3s infinite ease-in-out;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-25px); }
+      100% { transform: translateY(0); }
+    }
+
+    /* Small screens */
+    @media (max-width: 400px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 0.95rem;
+      }
+
+      button {
+        font-size: 14px;
+        padding: 10px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="card">
+    <h1>Will You Be My Valentine? 💖</h1>
+    <p>You make my world brighter every day 🌹</p>
+
+    <div class="buttons">
+      <button id="yesBtn">Yes 💕</button>
+      <button id="noBtn">No 😅</button>
+    </div>
+  </div>
+
+  <div class="card hidden" id="message">
+    <h1>Yaaay!!! 😍💘</h1>
+    <p>I knew you’d say yes 💖</p>
+    <p>You just made me the happiest person alive 🌹</p>
+  </div>
+
+  <audio id="bgMusic" src="Nyashinski - Malaika.mp3" preload="auto"></audio>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const card = document.getElementById("card");
+    const message = document.getElementById("message");
+
+    function moveNoButton() {
+      const container = document.querySelector(".buttons");
+      const maxX = container.clientWidth - noBtn.offsetWidth;
+      const maxY = container.clientHeight - noBtn.offsetHeight;
+
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    }
+
+    noBtn.addEventListener("touchstart", moveNoButton);
+    noBtn.addEventListener("mouseover", moveNoButton);
+    noBtn.addEventListener("click", moveNoButton);
+
+    yesBtn.addEventListener("click", () => {
+      card.classList.add("hidden");
+      message.classList.remove("hidden");
+      createHearts();
+    });
+
+    function createHearts() {
+      for (let i = 0; i < 20; i++) {
+        const heart = document.createElement("div");
+        heart.className = "hearts";
+        heart.innerHTML = "💖";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.top = Math.random() * window.innerHeight + "px";
+        heart.style.animationDuration = 2 + Math.random() * 3 + "s";
+        document.body.appendChild(heart);
+      }
+    }
+
+    const music = document.getElementById("bgMusic");
+
+const START_TIME = 27.5;   // seconds into the song
+const END_TIME = 180;    // stop at this second
+const VOLUME = 0.20;    // 25% volume
+
+music.volume = VOLUME;
+
+function startMusic() {
+  if (music.paused) {
+    music.currentTime = START_TIME;
+    music.play();
+  }
+}
+
+// Stop at end time
+music.addEventListener("timeupdate", () => {
+  if (music.currentTime >= END_TIME) {
+    music.pause();
+  }
+});
+
+// Start music after any interaction (mobile safe)
+document.addEventListener("click", startMusic, { once: true });
+document.addEventListener("touchstart", startMusic, { once: true });
+
+  </script>
+
+
+
+</body>
+</html>
